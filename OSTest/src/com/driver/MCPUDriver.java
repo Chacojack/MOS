@@ -6,7 +6,7 @@ import com.hardware.MCPU.CPUState;
 public class MCPUDriver {
 	private static final double NORMAL_TIME=10;
 	private static final double OVERCLOCK_TIME=8;
-	private static double time=NORMAL_TIME;
+	public static double time=NORMAL_TIME;
 	private static double pid_taking;
 	
 	public static synchronized boolean push(double pid){

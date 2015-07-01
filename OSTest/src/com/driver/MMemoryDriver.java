@@ -87,11 +87,11 @@ public class MMemoryDriver {
 	
 	
 	private double getAvailableSize(){
-		double availableSize=0;
+		double unavailableSize=0;
 		for(int i=0;i<memory.getMemoryUsed().size();i++){
-			availableSize=availableSize+memory.getMemoryUsed().get(i).getSize();
+			unavailableSize=unavailableSize+memory.getMemoryUsed().get(i).getSize();
 		}
-		return availableSize;
+		return memory.getMemorySize()-unavailableSize;
 	}
 	
 	

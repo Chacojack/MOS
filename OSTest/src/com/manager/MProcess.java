@@ -1,27 +1,21 @@
 package com.manager;
 
 public class MProcess extends Thread{
-	private enum ProcessType{
-		systemProcess,userProcess,idlingProcess
+	public enum ProcessType{
+		systemProcess,userProcess,idlingProcess;
 	}
-    private enum ProcessState{
-		ready,running,stopped
+    public enum ProcessState{
+		ready,running,stopped;
 	}
-	private double processId;
-	private ProcessType processType;
+	private double pid;
+	private ProcessType processType=ProcessType.systemProcess;
 	private ProcessState processState;
 	private double processGroupId;
 	private MUser user;
-	private double runTime;
+	private double runTime=Double.POSITIVE_INFINITY;//默认时间片无限大
 	private String createTime;
 	private int processPrority;
 	
-	public double getProcessId() {
-		return processId;
-	}
-	public void setProcessId(double processId) {
-		this.processId = processId;
-	}
 	public ProcessType getProcessType() {
 		return processType;
 	}
@@ -63,6 +57,12 @@ public class MProcess extends Thread{
 	}
 	public void setProcessPrority(int processPrority) {
 		this.processPrority = processPrority;
+	}
+	public double getPid() {
+		return pid;
+	}
+	public void setPid(double pid) {
+		this.pid = pid;
 	}
 
 }
