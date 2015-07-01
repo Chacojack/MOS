@@ -47,6 +47,7 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 
 	private JPanel fileSystem_panel;
 	private JToolBar toolBar;
+	private JLabel stateInfo_label;
 
 	public FileSystemFrame() {
 		setTitle("\u6211\u7684\u7535\u8111");
@@ -135,7 +136,12 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 		JMenu check_menu = new JMenu("\u67E5\u770B");
 		fileSystem_menuBar.add(check_menu);
 
-		JMenuItem search_menuItem = new JMenuItem("\u67E5\u627E");
+		JMenuItem search_menuItem = new JMenuItem("\u67E5\u770B\u78C1\u76D8\u5185\u90E8\u5B58\u50A8");
+		search_menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MDiskViewFrame();
+			}
+		});
 		check_menu.add(search_menuItem);
 
 		JMenu menu = new JMenu("\u8DF3\u8F6C");
@@ -159,6 +165,9 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 
 		JLabel statu_label = new JLabel("\u72B6\u6001\u680F ");
 		toolBar.add(statu_label);
+		
+		stateInfo_label = new JLabel("");
+		toolBar.add(stateInfo_label);
 
 		this.setVisible(true);
 		addFileButton(MDisk.getDisk());
@@ -188,6 +197,9 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 					public void actionWhenClickSingle(FileButton fileButton) {
 						super.actionWhenClickSingle(fileButton);
 						selectFile = mfile.getChildFile().get(fileButton.getName());
+						stateInfo_label.setText(selectFile.getName()+"[ size :"
+								+selectFile.getSize()+" Low : "+selectFile.getLow()
+								+" ]");
 					}
 				};
 				fileButton.setIcon(new ImageIcon(
@@ -232,7 +244,9 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 					public void actionWhenClickSingle(FileButton fileButton) {
 						super.actionWhenClickSingle(fileButton);
 						selectFile = mfile.getChildFile().get(fileButton.getName());
-						// TODO 添加展示磁盘空间的操作
+						stateInfo_label.setText(selectFile.getName()+"[ size :"
+								+selectFile.getSize()+" Low : "+selectFile.getLow()
+								+" usedSum : "+MDiskManager.getDiskManager().getUsedSum(selectFile)+" ]");
 					}
 				};
 				fileButton.setIcon(new ImageIcon(

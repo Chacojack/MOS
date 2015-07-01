@@ -188,19 +188,25 @@ public class MDiskManager {
 		switch (level) {
 		case 1:
 			blockNum_1 = (int) ((low-rootDisk.getLow())/DiskBlock.blockSize_1);
-			rootDisk.getBlockList().get(blockNum_1).setAvaliable(true);
+			int num = (int) Math.ceil(mFile.getSize()/DiskBlock.blockSize_1);
+			for(int i=0;i<num;i++){
+				rootDisk.getBlockList().get(blockNum_1+i).setAvaliable(true);
+			}
 			parent.getChildFile().remove(mFile.getName());
 			return true;
 		case 2:
 			blockNum_1 = (int) ((low-rootDisk.getLow())/DiskBlock.blockSize_1);
 			blockNum_2 = (int) ((low-rootDisk.getLow()-DiskBlock.blockSize_1*blockNum_1)/DiskBlock.blockSize_2);
-			rootDisk.getBlockList().get(blockNum_1).getBlockList().get(blockNum_2).setAvaliable(true);;
+			int num_2 = (int) Math.ceil(mFile.getSize()/DiskBlock.blockSize_2);
+			for(int i=0;i<num_2;i++){
+				rootDisk.getBlockList().get(blockNum_1).getBlockList().get(blockNum_2+i).setAvaliable(true);
+			}
 			parent.getChildFile().remove(mFile.getName());
 			return true;
 		case 3:
 			blockNum_1 = (int) ((low-rootDisk.getLow())/DiskBlock.blockSize_1);
 			blockNum_2 = (int) ((low-rootDisk.getLow()-DiskBlock.blockSize_1*blockNum_1)/DiskBlock.blockSize_2);
-			rootDisk.getBlockList().get(blockNum_1).getBlockList().get(blockNum_2).setAvaliable(true);;
+			rootDisk.getBlockList().get(blockNum_1).getBlockList().get(blockNum_2).setAvaliable(true);
 			parent.getChildFile().remove(mFile.getName());
 			return true;
 		default:

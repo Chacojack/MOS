@@ -59,6 +59,7 @@ public class MFile implements Serializable{
 	}
 	
 	public void initDiskBlock(){
+		blockList.clear();
 		int blockNum = (int) Math.ceil(size/MDisk.MB);
 		for(int i = 0;i<blockNum;i++){
 			blockList.add(new DiskBlock(DiskBlock.LEVEL_1));
