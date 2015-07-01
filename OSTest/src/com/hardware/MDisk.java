@@ -5,9 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 
-public class MDisk extends MFile{
+public class MDisk extends MFile implements Serializable{
 	
 	/**
 	 * 
@@ -19,7 +20,6 @@ public class MDisk extends MFile{
 		reading,writing,avaliable;
 	}
 	
-	
 	private String diskModel ;
 	private double diskSize = 256*MB;	
 	private String diskFactoryInfo;   
@@ -28,15 +28,17 @@ public class MDisk extends MFile{
 	private String path;
 	private static MDisk mdisk=new MDisk();
 	
+	
 	private MDisk(){
 		this.diskSize = 256*MB;	
 		this.diskState = DiskState.avaliable;
+		this.setType(FileType.disk);
 	}
 	
 	public static MDisk getDisk(){
 		if(mdisk==null){
 			mdisk = new MDisk();
-			mdisk.initDisk();
+//			mdisk.initDisk();
 		}
 		return mdisk;
 	}
@@ -102,6 +104,7 @@ public class MDisk extends MFile{
 			fileOutputStream = new FileOutputStream("system\\dev\\disk\\disk.ini");
 			objectOutputStream = new ObjectOutputStream(fileOutputStream);
 			objectOutputStream.writeObject(mdisk);
+			System.out.println("save disk over!");
 		} catch (IOException e1) {
 			System.out.println("save disk faild!");
 		} finally {
@@ -109,9 +112,10 @@ public class MDisk extends MFile{
 				fileOutputStream.close();
 				objectOutputStream.close();
 			} catch (IOException e1) {
-				System.out.println("iostream close faild!");
+				System.out.println("save disk iostream close faild!");
 			}
 		}
+		
 	}
 	
 	public void initDisk() {
@@ -121,16 +125,17 @@ public class MDisk extends MFile{
 			fileInputStream = new FileInputStream("system\\dev\\disk\\disk.ini");
 			objectInputStream = new ObjectInputStream(fileInputStream);
 			mdisk = (MDisk) objectInputStream.readObject();
+			System.out.println("init disk over!");
 		} catch (IOException e1) {
-			System.out.println("save disk faild!");
+			System.out.println("init disk faild!");
 		} catch (ClassNotFoundException e) {
-			System.out.println("save disk faild! because class not found!");
+			System.out.println("init disk faild! because class not found!");
 		} finally {
 			try {
 				fileInputStream.close();
 				objectInputStream.close();
 			} catch (IOException e1) {
-				System.out.println("iostream close faild!");
+				System.out.println("init disk iostream close faild!");
 			}
 		}
 	}

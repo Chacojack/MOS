@@ -7,11 +7,13 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.hardware.MFile;
+
 import my.swing.MyJButton;
 
 public class FileButton extends JPanel implements MouseListener{
 	
-	public final static int WIDTH = 76, HIEGHT = 100;
+	public final static int WIDTH = 74, HIEGHT = 78;
 	
 	private MyJButton myJButton = new MyJButton();
 	
@@ -20,14 +22,16 @@ public class FileButton extends JPanel implements MouseListener{
 	private JLabel name_label ;
 	
 	public FileButton(String name){
+		this.name = name ;
+		
 		this.setBackground(null);
 		this.setSize(WIDTH,HIEGHT);
 		this.addMouseListener(this);
 		this.myJButton.addMouseListener(this);
 		this.myJButton.setSize(WIDTH, WIDTH);
-		this.myJButton.setLocation(0, 0);
+		this.myJButton.setLocation((WIDTH-48)/2, 0);
 		this.add(myJButton);
-		this.name = name ;
+		
 		name_label = new JLabel(name, JLabel.CENTER);
 		name_label.setSize(WIDTH, HIEGHT-WIDTH);
 		name_label.setLocation(0, WIDTH);
@@ -52,10 +56,17 @@ public class FileButton extends JPanel implements MouseListener{
 		
 	}
 
+	
+	public void actionWhenClickSingle(FileButton fileButton){
+		
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount()==2) {
 			actionWhenClickDouble(this);
+		}else if (e.getClickCount()==1) {
+			actionWhenClickSingle(this);
 		}
 	}
 

@@ -181,8 +181,11 @@ public class DivideDialog extends JDialog {
 				default:
 					return ;
 				}
-				
-				MDiskManager.getDiskManager().divide(sizes);
+				double[] sizes_double = new double[sizes.length];
+				for(int i=0;i<sizes_double.length;i++){
+					sizes_double[i] = sizes[i] * MDisk.MB;
+				}
+				MDiskManager.getDiskManager().divide(sizes_double);
 				dispose();
 			}
 		});
