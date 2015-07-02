@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import com.app.filesystem.frame.FileSystemFrame;
+import com.app.process.frame.ProcessSystemFrame;
 import com.hardware.MDisk;
 
 import my.swing.MyJButton;
@@ -53,6 +54,7 @@ public class MOSFrame extends JFrame{
 		main_panel.setBounds(0, 0, 1366, 768);
 		getContentPane().add(main_panel);
 		main_panel.setLayout(null);
+		
 		ImageIcon img = new ImageIcon("res/launcher/draw/my_computer_72.png");
 		MyJButton myComputer_button = new MyJButton(img);
 		myComputer_button.setBounds(10, 10, 72, 72);
@@ -81,6 +83,36 @@ public class MOSFrame extends JFrame{
 			}
 		});;
 		main_panel.add(myComputer_button);
+		
+		ImageIcon img1 = new ImageIcon("res/launcher/draw/my_process_72.png");
+		MyJButton myProcess_button = new MyJButton(img1);
+		myProcess_button.setBounds(10, 140, 72, 72);
+		myProcess_button.addMouseListener(new MouseListener(){
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount()==2){
+					new ProcessSystemFrame();
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				
+			}
+		});;
+		main_panel.add(myProcess_button);
+		
 		this.setVisible(true);
 		
 	}

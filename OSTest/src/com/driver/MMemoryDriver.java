@@ -1,12 +1,12 @@
 package com.driver;
 
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 import com.hardware.MMemory;
 import com.hardware.MMemory.MemoryState;
 import com.hardware.MMemoryItem;
+import com.manager.MProcess;
 
 
 /** 
@@ -15,39 +15,31 @@ import com.hardware.MMemoryItem;
  * @return 
  */
 public class MMemoryDriver {
-	MMemory memory = MMemory.getMemory();
+	static MMemory memory = MMemory.getMemory();
 	
 	/** 
     * 申请内存 
     * @param map 
     * @return 返回是否成功
     */ 
-	public  boolean apply(double pid,double size){
+	public static boolean apply(double pid,double size){
 		memory.setMemoryState(MemoryState.reading);
 		if(getAvailableSize()>=size){
 			if(getMaxAvailableBlock()[0]>=size){
-				boolean isComplete=distribute(pid,size,getMaxAvailableBlock()[1]);
 				memory.setMemoryState(MemoryState.avaliable);
-			    return isComplete;
-			}
-			else {
-				memory.setMemoryState(MemoryState.avaliable);
-				return false;
+				return true;
 			}
 		}
-		else{
 			memory.setMemoryState(MemoryState.avaliable);
 			return false;
-		}
 	}
 	
 	
-	public boolean distribute(double pid,double size,double blocklow){
+	public static boolean distribute(double pid,double size,double blocklow){
 		if(memory.getMemoryState()==MemoryState.avaliable){
 			MMemoryItem memoryItem=new MMemoryItem();
 			memoryItem.setPid(pid);
 			memoryItem.setLow(blocklow);
-			memoryItem.setHigh(blocklow+size);
 			memoryItem.setSize(size);
 			memory.setMemoryUsed(memoryItem);
 			return true;
@@ -59,7 +51,7 @@ public class MMemoryDriver {
 	}
 	
 	
-	public boolean release(double pid){
+	public static boolean release(double pid){
 		memory.setMemoryState(MemoryState.writing);
 		for(int i=0;i<memory.getMemoryUsed().size();i++){
 			if(memory.getMemoryUsed().get(i).getPid()==pid){
@@ -76,17 +68,33 @@ public class MMemoryDriver {
 		
 	}
 	
+    //压缩内存，返回剩余内存
+    public static double compress(){
+    	double available;
+    	ArrayList<MMemoryItem> itemList=memory.getMemoryUsed();
+    	double lowLast=0;
+    	double highNext=0;
+    	for(int i=0;i<itemList.size();i++){
+    		if(itemList.get(i).getLow()>highNext+1){
+    			itemList.get(i).setLow(highNext+1);
+    			highNext=itemList.get(i).getHigh();
+    		}
+    	}
+    	available=memory.getMemorySize()-highNext;
+   	    return available;
+	}
 	
-	public float getUsedRate(){
+	
+	public static float getUsedRate(){
 		return (float) ((memory.getMemorySize()-getAvailableSize())/memory.getMemorySize());
 	}
 	
-	public ArrayList<MMemoryItem> getMemoryUsedList(){
+	public static ArrayList<MMemoryItem> getMemoryUsedList(){
 		return memory.getMemoryUsed();
 	}
 	
 	
-	private double getAvailableSize(){
+	private static double getAvailableSize(){
 		double unavailableSize=0;
 		for(int i=0;i<memory.getMemoryUsed().size();i++){
 			unavailableSize=unavailableSize+memory.getMemoryUsed().get(i).getSize();
@@ -94,8 +102,8 @@ public class MMemoryDriver {
 		return memory.getMemorySize()-unavailableSize;
 	}
 	
-	
-	private double[] getMaxAvailableBlock(){
+	//返回最坏适应块
+	public  static double[] getMaxAvailableBlock(){
 		double maxAvailableBlock=0;
 		double blockLow = 0;
 		double low_this=0;
@@ -107,15 +115,65 @@ public class MMemoryDriver {
 			temp=low_this-high_last;
 			if(temp>maxAvailableBlock){
 				maxAvailableBlock=temp;
+				blockLow=high_last+1;
 			}
 			high_last=memory.getMemoryUsed().get(i).getHigh();
 		}
 		temp=memory.getMemorySize()-high_last;
 		if(temp>maxAvailableBlock){
 			maxAvailableBlock=temp;
+			blockLow=high_last+1;
 		}
 		block[0]=maxAvailableBlock;
 		block[1]=blockLow;
+		return block;
+	}
+	//返回最好适应块
+	public  static double[] getBestAvailableBlock(MProcess process){
+		double bestAvailableBlock=0;
+		double fitLevel=-1;
+		double blockLow = 0;
+		double low_this=0;
+		double high_last=0;
+		double temp;
+		double block[] = null;
+		for(int i=0;i<memory.getMemoryUsed().size();i++){
+			low_this=memory.getMemoryUsed().get(i).getLow();
+			temp=low_this-high_last;
+			if(temp-process.getMemorySize()>=0&&temp-process.getMemorySize()<fitLevel){
+				fitLevel=temp-process.getMemorySize();
+				bestAvailableBlock=temp;
+				blockLow=high_last+1;
+			}
+		}
+		temp=memory.getMemorySize()-high_last;
+		if(temp-process.getMemorySize()>=0&&temp-process.getMemorySize()<fitLevel){
+			fitLevel=memory.getMemorySize()-high_last;
+			bestAvailableBlock=temp;
+			blockLow=high_last+1;
+		}
+		block[0]=bestAvailableBlock;
+		block[1]=blockLow;
+		return block;
+	}
+	//返回最先适应块
+	public  static double[] getFirstAvailableBlock(MProcess process){
+		double firstAvailableBlock=0;
+		double blockLow = 0;
+		double low_this=0;
+		double high_last=0;
+		double temp;
+		double block[] = null;
+		for(int i=0;i<memory.getMemoryUsed().size();i++){
+			low_this=memory.getMemoryUsed().get(i).getLow();
+			temp=low_this-high_last;
+			if(temp>=process.getMemorySize()){
+				firstAvailableBlock=temp;
+				block[0]=firstAvailableBlock;
+				block[1]=high_last+1;
+				return block;
+			}
+		}
 		return block;
 	}
 	

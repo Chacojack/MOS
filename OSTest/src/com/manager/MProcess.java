@@ -1,5 +1,7 @@
 package com.manager;
 
+import java.util.Random;
+
 public class MProcess extends Thread{
 	public enum ProcessType{
 		systemProcess,userProcess,idlingProcess;
@@ -7,14 +9,17 @@ public class MProcess extends Thread{
     public enum ProcessState{
 		ready,running,stopped;
 	}
-	private double pid;
+	private double pid=0;
+	private int IONeed=new Random().nextInt(5)+1;
+	private double memorySize=0;
 	private ProcessType processType=ProcessType.systemProcess;
 	private ProcessState processState;
 	private double processGroupId;
 	private MUser user;
 	private double runTime=Double.POSITIVE_INFINITY;//默认时间片无限大
 	private String createTime;
-	private int processPrority;
+	private int processPrority=0;//1-5，数字越小表示优先级越大
+	
 	
 	public ProcessType getProcessType() {
 		return processType;
@@ -63,6 +68,15 @@ public class MProcess extends Thread{
 	}
 	public void setPid(double pid) {
 		this.pid = pid;
+	}
+	public int getIONeed() {
+		return IONeed;
+	}
+	public double getMemorySize() {
+		return memorySize;
+	}
+	public void setMemorySize(double memorySize) {
+		this.memorySize = memorySize;
 	}
 
 }

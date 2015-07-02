@@ -15,7 +15,7 @@ public class MMemory {
 	private MemoryState memoryState;
 	private String memoryExtraInfo;
 //	private Map<String,MMemoryItem> memoryUsed=new LinkedHashMap<String, MMemoryItem>();
-	private ArrayList<MMemoryItem> memoryUsed;
+	private ArrayList<MMemoryItem> memoryUsed=new ArrayList<>();
 	private MMemory(){};
 	public static MMemory getMemory(){
 		return mmemory;
