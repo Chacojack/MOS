@@ -1,13 +1,11 @@
 package com.app.filesystem.frame;
 
-import java.awt.Frame;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-import com.hardware.MDisk;
 import com.hardware.MFile;
 import com.hardware.MFile.FileType;
 import com.manager.MDiskManager;
@@ -16,6 +14,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class CreateFolderDialog extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField floder_textField;
 
 	public CreateFolderDialog(final FileSystemFrame owner) {

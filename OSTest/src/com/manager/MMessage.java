@@ -47,6 +47,13 @@ public class MMessage {
 	public void setSourceTag(String sourceTag) {
 		this.sourceTag = sourceTag;
 	}
+
+	@Override
+	public String toString() {
+		return "MMessage [arg1=" + arg1 + ", arg2=" + arg2 + ", object="
+				+ object + ", targetTag=" + targetTag + ", sourceTag="
+				+ sourceTag + "]";
+	}
 	
 	
 

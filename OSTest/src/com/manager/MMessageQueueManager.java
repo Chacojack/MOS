@@ -2,6 +2,8 @@ package com.manager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class MMessageQueueManager extends MProcess{
 	
@@ -21,22 +23,44 @@ public class MMessageQueueManager extends MProcess{
 	}
 	
 	public boolean registerReciecer(MMessageReciever reciever){
+		System.out.println("消息管理器收到一条注册消息！");
 		recieverRegistry.put(reciever.getTag(), reciever);
+		printRecieverRegistry();
 		return true;
 	}
 	
 	public boolean addMessage(MMessage message){
-		return messageQueue.addMessage(message);
+		synchronized (messageQueue) {
+			System.out.println("消息队列接收到一个消息！");
+			return messageQueue.addMessage(message);
+		}
 	}
 
 	@Override
 	public void run() {
+		System.out.println("消息队列开始运转！");
 		for(;;){
-			if(messageQueue.length()>0){
-				MMessage message = messageQueue.deleteMessage(0);
-				MMessageReciever reciever = recieverRegistry.get(message.getTargetTag());
-				reciever.recieverMessage(message);
+			synchronized (messageQueue) {
+				if(messageQueue.length()>0){
+					System.out.println("消息队列处理一条消息！");
+					printRecieverRegistry();
+					System.out.println();
+					MMessage message = messageQueue.deleteMessage(0);
+					System.out.println(message.toString());
+					MMessageReciever reciever = recieverRegistry.get(message.getTargetTag());
+					reciever.recieverMessage(message);
+				}
 			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {}
+		}
+	}
+	
+	public void printRecieverRegistry(){
+		Set<Entry<String, MMessageReciever>> set = recieverRegistry.entrySet();
+		for(Entry< String, MMessageReciever> entry : set) {
+			System.out.println(entry.getValue().getTag());
 		}
 	}
 }

@@ -8,6 +8,10 @@ import javax.swing.JPanel;
 
 public class MyAlphaJPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private float alpha = 0.7f; 
 	
 	public MyAlphaJPanel(){

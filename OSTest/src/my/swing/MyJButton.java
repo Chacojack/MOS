@@ -11,6 +11,11 @@ import javax.swing.JButton;
 
 public class MyJButton extends JButton implements MouseListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public MyJButton(){
 		super();
 		this.setContentAreaFilled(false);

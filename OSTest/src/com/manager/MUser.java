@@ -5,7 +5,13 @@ import java.util.Map;
 
 public class MUser implements Serializable{
 	
-	enum UserType{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
+	public enum UserType{
 		administrator,user
 	}
 	
@@ -13,7 +19,41 @@ public class MUser implements Serializable{
 	private String userName;
 	private Map<String,Object> userAttributeMap;
 	private UserType level;
+	private String password;
 	
+	
+	
+	public MUser(String userId, String password) {
+		super();
+		this.userId = userId;
+		this.password = password;
+	}
+	
+	
+	
+	public MUser(String userId, String userName, UserType level, String password) {
+		this(userId, userName,null,level,password);
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 * @param userName
+	 * @param userAttributeMap
+	 * @param level
+	 * @param password
+	 */
+	public MUser(String userId, String userName,
+			Map<String, Object> userAttributeMap, UserType level,
+			String password) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userAttributeMap = userAttributeMap;
+		this.level = level;
+		this.password = password;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -38,7 +78,9 @@ public class MUser implements Serializable{
 	public void setLevel(UserType level) {
 		this.level = level;
 	}
-	
+	public boolean verify(String password){
+		return this.password.equals(password);
+	}
 	
 
 }

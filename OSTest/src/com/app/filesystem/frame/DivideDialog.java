@@ -9,8 +9,6 @@ import java.awt.Toolkit;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JButton;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.SpinnerNumberModel;
 
 import com.hardware.MDisk;

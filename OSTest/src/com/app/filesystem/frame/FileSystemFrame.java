@@ -11,7 +11,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import com.hardware.MDisk;
-import com.hardware.MDisk.DiskState;
 import com.hardware.MFile;
 import com.hardware.MFile.FileType;
 import com.manager.MDiskManager;
@@ -30,7 +29,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JToolBar;
 import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 
 public class FileSystemFrame extends JFrame implements WindowListener {
 
@@ -198,7 +196,7 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 						super.actionWhenClickSingle(fileButton);
 						selectFile = mfile.getChildFile().get(fileButton.getName());
 						stateInfo_label.setText(selectFile.getName()+"[ size :"
-								+selectFile.getSize()+" Low : "+selectFile.getLow()
+								+getStringSize(selectFile.getSize())+" Low : "+selectFile.getLow()
 								+" ]");
 					}
 				};
@@ -245,8 +243,8 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 						super.actionWhenClickSingle(fileButton);
 						selectFile = mfile.getChildFile().get(fileButton.getName());
 						stateInfo_label.setText(selectFile.getName()+"[ size :"
-								+selectFile.getSize()+" Low : "+selectFile.getLow()
-								+" usedSum : "+MDiskManager.getDiskManager().getUsedSum(selectFile)+" ]");
+								+getStringSize(selectFile.getSize())+" Low : "+selectFile.getLow()
+								+" usedSum : "+getStringSize(MDiskManager.getDiskManager().getUsedSum(selectFile))+" ]");
 					}
 				};
 				fileButton.setIcon(new ImageIcon(
@@ -268,6 +266,18 @@ public class FileSystemFrame extends JFrame implements WindowListener {
 
 	public void setmFile(MFile mFile) {
 		this.mFile = mFile;
+	}
+	
+	public String getStringSize(double size){
+		if(size<MDisk.KB){
+			return size+"B";
+		}else if (size<MDisk.MB) {
+			return size/MDisk.KB+"KB";
+		}else if (size<MDisk.GB) {
+			return size/MDisk.MB+"MB";
+		}else {
+			return size/MDisk.GB+"GB";
+		}
 	}
 
 	public Point calculateLocationPoint(int count) {

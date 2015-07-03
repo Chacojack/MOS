@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
-import javax.sql.RowSet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -51,7 +50,7 @@ public class MDiskViewFrame extends JFrame {
 		 */
 		private static final long serialVersionUID = 1L;
 		
-		private MFile mFile = MDisk.getDisk();
+//		private MFile mFile = MDisk.getDisk();
 		private int cols,rows;
 		
 		public DrawPanel(){
@@ -117,7 +116,10 @@ public class MDiskViewFrame extends JFrame {
 					MFile mFile = entry.getValue();
 					for(int i=0;i<mFile.getBlockList().size();i++){
 						if(count_2 ==count){
-							new MDiskViewDetailFrame(mFile.getBlockList().get(i));
+							if(mFile.getBlockList().get(i).isAvaliable()&&mFile.getBlockList().get(i).getBlockList()!=null){
+								new MDiskViewDetailFrame(mFile.getBlockList().get(i));
+								return ;
+							}
 						}
 						count_2++;
 					}

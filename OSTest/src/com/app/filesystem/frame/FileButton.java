@@ -7,12 +7,15 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.hardware.MFile;
-
 import my.swing.MyJButton;
 
 public class FileButton extends JPanel implements MouseListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public final static int WIDTH = 74, HIEGHT = 78;
 	
 	private MyJButton myJButton = new MyJButton();
@@ -23,18 +26,19 @@ public class FileButton extends JPanel implements MouseListener{
 	
 	public FileButton(String name){
 		this.name = name ;
-		
 		this.setBackground(null);
-		this.setSize(WIDTH,HIEGHT);
+		this.setSize(74,78);
 		this.addMouseListener(this);
+		this.setLayout(null);
+		
 		this.myJButton.addMouseListener(this);
-		this.myJButton.setSize(WIDTH, WIDTH);
-		this.myJButton.setLocation((WIDTH-48)/2, 0);
+		this.myJButton.setSize(48, 48);
+		this.myJButton.setLocation((this.getWidth()-myJButton.getWidth())/2, 0);
 		this.add(myJButton);
 		
 		name_label = new JLabel(name, JLabel.CENTER);
-		name_label.setSize(WIDTH, HIEGHT-WIDTH);
-		name_label.setLocation(0, WIDTH);
+		name_label.setSize(this.getWidth(), this.getHeight()-myJButton.getHeight());
+		name_label.setLocation(0, myJButton.getY()+myJButton.getHeight());
 		name_label.setBorder(null);
 		this.add(name_label);
 	}

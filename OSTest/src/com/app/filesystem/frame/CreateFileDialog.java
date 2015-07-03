@@ -1,6 +1,5 @@
 package com.app.filesystem.frame;
 
-import java.awt.Frame;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -14,14 +13,19 @@ import com.manager.MDiskManager;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SpinnerNumberModel;
 
 public class CreateFileDialog extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField file_textField;
-	private JComboBox sizeType_comboBox;
+	private JComboBox<Object> sizeType_comboBox;
 	private JSpinner fileSize_spinner;
 
 	public CreateFileDialog(final FileSystemFrame owner) {
@@ -88,8 +92,8 @@ public class CreateFileDialog extends JDialog {
 		fileSize_spinner.setBounds(10, 91, 68, 22);
 		getContentPane().add(fileSize_spinner);
 		
-		sizeType_comboBox = new JComboBox();
-		sizeType_comboBox.setModel(new DefaultComboBoxModel(new String[] {"B", "KB", "MB", "GB"}));
+		sizeType_comboBox = new JComboBox<Object>();
+		sizeType_comboBox.setModel(new DefaultComboBoxModel<Object>(new String[] {"B", "KB", "MB", "GB"}));
 		sizeType_comboBox.setBounds(98, 91, 68, 21);
 		getContentPane().add(sizeType_comboBox);
 		
